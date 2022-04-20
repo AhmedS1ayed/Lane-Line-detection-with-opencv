@@ -14,9 +14,6 @@ libjpeg-dev zlib1g-dev <br />
 pillow <br />
 matplotlib <br />
 opencv-python version 4.5.4 <br />
-
-
-
 scikit-build <br />
 wheel <br />
 imageio <br />
