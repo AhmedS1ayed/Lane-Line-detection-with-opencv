@@ -1,12 +1,19 @@
 #!/bin/bash
-if [ "$1" == "k3" ]; then
-    project_path="/Lane-Line-detection-with-opencv-main"
-fi
-code_path="code"
-full_path="$project_path$code_path"
-# Go to directory of project
-cd $full_path
-# Start environment & notebook if available
-pipenv shell
-pip install jupyter notebook
-pipenv run jupyter notebook
+
+#install python and pip
+sudo apt-get install python3-pip
+sudo apt-get install python3-venv
+
+#create virtual enviroment
+python3 -m venv env
+
+#activate virtual enviroment
+source env/bin/activate
+
+#install dependencies
+sudo apt-get install libjpeg-dev zlib1g-dev
+python3 -m pip install pillow
+python3 -m pip install matplotlib
+python3 -m pip install opencv-python
+
+python3 Lane_line_detection.py $1 $2 $3
