@@ -1,12 +1,12 @@
 # Lane-Line-detection-with-opencv
-this project solve the lane line detection problem using opencv__
+this project solve the lane line detection problem using opencv __
 
 # How to use 
 use the bash script as following : __
-$ bash bashscript.sh <input_file.mp4> <output_file> --d __
+$ bash bashscript.sh <input_file.mp4> <output_file.mp4> <--d> __
 
-Note : 1- you can use -h for help .__
-       2- --d is for debugging .__
+Note : 1- you can use -h for help . __
+       2- --d is for debugging . __
        
 # Dependencies 
 
