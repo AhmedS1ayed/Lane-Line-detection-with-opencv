@@ -20,5 +20,4 @@ python3 -m pip install opencv-python
 python3 -m pip install imageio
 python3 -m pip install moviepy
 python3 -m pip install IPython
-python3 -m pip install getpy
 python3 Lane_line_detection.py $1 $2 $3
