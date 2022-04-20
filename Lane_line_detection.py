@@ -94,11 +94,11 @@ def get_binary_image(image):
     
     return  hls_binary 
 
-image1 = cv2.imread('straight_lines2.jpg')
-image = cv2.cvtColor(image1, cv2.COLOR_BGR2RGB)  #BGR to RGB   
-hls_binary = get_binary_image(image)
-print(hls_binary.shape)
-plt.imshow(hls_binary)
+# image1 = cv2.imread('straight_lines2.jpg')
+# image = cv2.cvtColor(image1, cv2.COLOR_BGR2RGB)  #BGR to RGB   
+# hls_binary = get_binary_image(image)
+# print(hls_binary.shape)
+# plt.imshow(hls_binary)
 
 
 # # PerspectiveTransform
@@ -168,9 +168,9 @@ def warp(image):
     
     return wraped_img, Minv
 
-wraped_img, Minv = warp(hls_binary)
-print(wraped_img.shape)
-plt.imshow(wraped_img)
+# wraped_img, Minv = warp(hls_binary)
+# print(wraped_img.shape)
+# plt.imshow(wraped_img)
 
 
 # # Histogram
@@ -187,8 +187,8 @@ def get_histogram(binary_warped):
     
     return histogram
     
-histogram = get_histogram(wraped_img)
-plt.plot(histogram)
+# histogram = get_histogram(wraped_img)
+# plt.plot(histogram)
 
 
 # # sliding window
@@ -316,7 +316,7 @@ def slide_window(binary_warped, histogram):
     return ret, out_img, result
     
 
-draw_info, out_img, lanes = slide_window(wraped_img, histogram)
+# draw_info, out_img, lanes = slide_window(wraped_img, histogram)
 
 
 # # Lane Curvature
@@ -344,7 +344,7 @@ def measure_curvature(lines_info):
     
     return left_curverad, right_curverad
     
-left_curverad, right_curverad = measure_curvature(draw_info)
+# left_curverad, right_curverad = measure_curvature(draw_info)
 
 
 # # Draw Lane Lines
@@ -390,8 +390,8 @@ def draw_lane_lines(original_image, warped_image, Minv, draw_info):
     return result
 
 
-result = draw_lane_lines(image, wraped_img, Minv, draw_info)
-plt.imshow(result)
+# result = draw_lane_lines(image, wraped_img, Minv, draw_info)
+# plt.imshow(result)
 
 
 # # Proccess Image
@@ -401,7 +401,7 @@ plt.imshow(result)
 
 global used_warped
 global used_draw_info
-global first_frame
+
 first_frame = 1
 
 def single_pt_perspective(x, src_first_pt, src_last_pt, dst_first_pt, dst_last_pt):
@@ -501,10 +501,10 @@ def process_image(image):
     
     return result 
 
-image1 = cv2.imread('straight_lines2.jpg')
-image = cv2.cvtColor(image1, cv2.COLOR_BGR2RGB)  #BGR to RGB   
-result_image = process_image(image)
-plt.imshow(result_image)
+# image1 = cv2.imread('straight_lines2.jpg')
+# image = cv2.cvtColor(image1, cv2.COLOR_BGR2RGB)  #BGR to RGB   
+# result_image = process_image(image)
+# plt.imshow(result_image)
 
 
 # # Create Output video
@@ -516,6 +516,7 @@ import imageio
 #imageio.plugins.ffmpeg.download()
 from moviepy.editor import VideoFileClip
 from IPython.display import HTML
+from IPython import get_ipython
 def create_video(clip,output):    
 # output = 'pv1.mp4'
 # clip = VideoFileClip("project_video.mp4")
@@ -561,8 +562,8 @@ def main(argv):
         print ('test.py <inputfile> <outputfile> <--d>') #--d for debug
  
     
-    #clip = VideoFileClip(inputfile)
-    #create_video(clip,output)
+    clip = VideoFileClip(inputfile)
+    create_video(clip,outputfile)
     
 if __name__ == "__main__":
     main(sys.argv[1:])
