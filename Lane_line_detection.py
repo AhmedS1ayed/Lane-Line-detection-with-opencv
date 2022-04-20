@@ -3,7 +3,7 @@
 
 # # Generate Binary Threshold
 
-# In[3]:
+# In[10]:
 
 
 import matplotlib.pylab as plt
@@ -31,16 +31,20 @@ def get_binary_image(image):
     hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
     L = hls[:,:,1]
     L_max, L_mean = np.max(L), np.mean(L)
-    print(L_mean)
+    print(L_mean, "l_mean")
     S = hls[:,:,2]
     S_max, S_mean = np.max(S), np.mean(S)
 
     #Changing filter cooficients based on the average lightning
     if (first_frame):
-        if ((L_mean < 123) | (L_mean > 126)):
+        if ((L_mean < 122) | (L_mean > 126)):
             filter_flag = 0
+            print('p0')
         else:
             filter_flag = 1
+            print('c0')
+            
+    
             
     if (not filter_flag):
         #yellow cooficients
@@ -52,6 +56,7 @@ def get_binary_image(image):
         white_L_thr = 160
         L_max_coof = 0.8
         wh_L_mean_coof = 1.25
+        print('p1')
     else:
         #yellow cooficients
         yellow_L_thr = 0
@@ -62,6 +67,7 @@ def get_binary_image(image):
         white_L_thr = 0
         L_max_coof = 0.7
         wh_L_mean_coof = 1.3
+        print('c1')
         
         
     # YELLOW
@@ -88,7 +94,7 @@ def get_binary_image(image):
     
     return  hls_binary 
 
-image1 = cv2.imread('test3.jpg')
+image1 = cv2.imread('straight_lines2.jpg')
 image = cv2.cvtColor(image1, cv2.COLOR_BGR2RGB)  #BGR to RGB   
 hls_binary = get_binary_image(image)
 print(hls_binary.shape)
@@ -97,7 +103,7 @@ plt.imshow(hls_binary)
 
 # # PerspectiveTransform
 
-# In[4]:
+# In[11]:
 
 
 def perspectiveTrnsform(srcp ,dstp):
@@ -143,6 +149,8 @@ def warp(image):
             [1100,713]
         ]).astype(np.float32)
         
+        print('c2')
+        
         src_first_pt = 200
         src_last_pt = 1200
         dst_first_pt = 300
@@ -167,7 +175,7 @@ plt.imshow(wraped_img)
 
 # # Histogram
 
-# In[5]:
+# In[12]:
 
 
 def get_histogram(binary_warped):
@@ -185,7 +193,7 @@ plt.plot(histogram)
 
 # # sliding window
 
-# In[6]:
+# In[13]:
 
 
 def slide_window(binary_warped, histogram):
@@ -313,7 +321,7 @@ draw_info, out_img, lanes = slide_window(wraped_img, histogram)
 
 # # Lane Curvature
 
-# In[7]:
+# In[14]:
 
 
 def measure_curvature(lines_info):
@@ -341,7 +349,7 @@ left_curverad, right_curverad = measure_curvature(draw_info)
 
 # # Draw Lane Lines
 
-# In[8]:
+# In[15]:
 
 
 def draw_lane_lines(original_image, warped_image, Minv, draw_info):
@@ -388,11 +396,13 @@ plt.imshow(result)
 
 # # Proccess Image
 
-# In[9]:
+# In[17]:
 
 
 global used_warped
 global used_draw_info
+global first_frame
+first_frame = 1
 
 def single_pt_perspective(x, src_first_pt, src_last_pt, dst_first_pt, dst_last_pt):
 #     new_x = (s_w/d_w)*(x-d_f) + s_f
@@ -402,8 +412,12 @@ def single_pt_perspective(x, src_first_pt, src_last_pt, dst_first_pt, dst_last_p
 def process_image(image):
     global used_warped
     global used_draw_info
-    global first_frame
+    global filter_flag
     
+#     if (filter_flag):
+        
+#         image = image1
+#         print('k')
 
     # Generating HLS Binary Threshold
     hls_binary = get_binary_image(image)
@@ -468,7 +482,7 @@ def process_image(image):
     first_frame = 0
     
     global debug
-    debug = 1
+#     debug = 1
     if debug == 1:
         
         resized = cv2.resize(result, (2560,1440))
@@ -487,7 +501,7 @@ def process_image(image):
     
     return result 
 
-image1 = cv2.imread('test3.jpg')
+image1 = cv2.imread('straight_lines2.jpg')
 image = cv2.cvtColor(image1, cv2.COLOR_BGR2RGB)  #BGR to RGB   
 result_image = process_image(image)
 plt.imshow(result_image)
@@ -495,23 +509,23 @@ plt.imshow(result_image)
 
 # # Create Output video
 
-# In[ ]:
+# In[1]:
 
 
 import imageio
 #imageio.plugins.ffmpeg.download()
 from moviepy.editor import VideoFileClip
 from IPython.display import HTML
-# def create_video(clip,output):    
-output = 'project_video_out11.mp4'
-clip = VideoFileClip("project_video.mp4")
-video_clip = clip.fl_image(process_image)
-get_ipython().run_line_magic('time', 'video_clip.write_videofile(output, audio=False)')
+def create_video(clip,output):    
+# output = 'pv1.mp4'
+# clip = VideoFileClip("project_video.mp4")
+    video_clip = clip.fl_image(process_image)
+    get_ipython().run_line_magic('time', 'video_clip.write_videofile(output, audio=False)')
 
 
 # # Main
 
-# In[26]:
+# In[ ]:
 
 
 import sys
